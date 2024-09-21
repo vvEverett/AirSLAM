@@ -25,34 +25,44 @@ FeatureDetector::FeatureDetector(const PLNetConfig& plnet_config) : _plnet_confi
       exit(0);
     }
   }
-
-  _plnet = std::shared_ptr<PLNet>(new PLNet(_plnet_config));
-  if (!_plnet->build()){
+  // Para useline is define in feature_detector.h
+  if (useline){
+    _plnet = std::shared_ptr<PLNet>(new PLNet(_plnet_config));
+    if (!_plnet->build()){
     std::cout << "Error in FeatureDetector building" << std::endl;
     // exit(0);
+    }
   }
-}
 
+}
 bool FeatureDetector::Detect(cv::Mat& image, Eigen::Matrix<float, 259, Eigen::Dynamic> &features){
   bool good_infer = false;
   if(_plnet_config.use_superpoint){
     good_infer = _superpoint->infer(image, features);
-  }else{
+  }else if (useline){
     std::vector<Eigen::Vector4d> lines;
     good_infer = Detect(image, features, lines);
+  }else {
+    good_infer = _superpoint->infer(image, features);
   }
 
 
   if(!good_infer){
-    std::cout << "Failed when extracting point features !" << std::endl;
+    std::cout << "Failed when extracting point features!" << std::endl;
   }
   return good_infer; 
 }
 
 bool FeatureDetector::Detect(cv::Mat& image, Eigen::Matrix<float, 259, Eigen::Dynamic> &features, 
     std::vector<Eigen::Vector4d>& lines){
-  Eigen::Matrix<float, 259, Eigen::Dynamic> junctions;
-  bool good_infer = _plnet->infer(image, features, lines, junctions);
+  bool good_infer = false;
+  if (useline){
+    Eigen::Matrix<float, 259, Eigen::Dynamic> junctions;
+    good_infer = _plnet->infer(image, features, lines, junctions);
+  }else{
+    good_infer = Detect(image, features);
+  }
+
   if(!good_infer){
     std::cout << "Failed when extracting point features !" << std::endl;
   }
@@ -61,7 +71,12 @@ bool FeatureDetector::Detect(cv::Mat& image, Eigen::Matrix<float, 259, Eigen::Dy
 
 bool FeatureDetector::Detect(cv::Mat& image, Eigen::Matrix<float, 259, Eigen::Dynamic> &features, 
     std::vector<Eigen::Vector4d>& lines, Eigen::Matrix<float, 259, Eigen::Dynamic>& junctions){
-  bool good_infer = _plnet->infer(image, features, lines, junctions, true);
+  bool good_infer = false;
+  if (useline){
+    good_infer = _plnet->infer(image, features, lines, junctions, true);
+  }else{
+    good_infer = Detect(image, features);
+  }
   if(!good_infer){
     std::cout << "Failed when extracting point features !" << std::endl;
   }

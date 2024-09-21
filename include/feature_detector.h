@@ -28,6 +28,7 @@ private:
   PLNetConfig _plnet_config;
   SuperPointPtr _superpoint;
   PLNetPtr _plnet;
+  bool useline = false;
 };
 
 typedef std::shared_ptr<FeatureDetector> FeatureDetectorPtr;
