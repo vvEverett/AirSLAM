@@ -51,6 +51,7 @@ include_directories(
   ${G2O_INCLUDE_DIR}
   ${GFLAGS_INCLUDE_DIRS} 
   ${GLOG_INCLUDE_DIRS}
+  /home/vv/noetic_ws/install_isolated/include
 )
 
 add_library(${PROJECT_NAME}_lib SHARED

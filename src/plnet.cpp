@@ -22,7 +22,9 @@ PLNet::PLNet(PLNetConfig& plnet_config) : plnet_config_(plnet_config), engine0_(
 }
 
 bool PLNet::build() {
+  std::cout << "Starting PLNet build process..." << std::endl;
   if (deserialize_engine()) {
+    std::cout << "Engines deserialized successfully." << std::endl;
     if (!context0_) {
       context0_ = TensorRTUniquePtr<nvinfer1::IExecutionContext>(engine0_->createExecutionContext());
       if (!context0_) {
@@ -48,8 +50,10 @@ bool PLNet::build() {
     loi_features_aux_index_ = engine1_->getBindingIndex("loi_features_aux");
     return true;
   }
+  std::cout << "Creating TensorRT builder for stage 1..." << std::endl;
   auto builder_stage1 = TensorRTUniquePtr<nvinfer1::IBuilder>(nvinfer1::createInferBuilder(gLogger.getTRTLogger()));
   if (!builder_stage1) {
+    std::cerr << "Failed to create TensorRT builder for stage 1." << std::endl;
     return false;
   }
   const auto explicit_batch = 1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
