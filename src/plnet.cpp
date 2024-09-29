@@ -272,17 +272,31 @@ bool PLNet::process_image(const BufferManager &buffers, const cv::Mat &image) {
 
   return true;
 }
-
+// change to old version to avoid error "value.h:682: DCHECK(new_vv.cast(myelinTypeUint64)) failed. ".
 bool PLNet::wireframe_matcher(const float* iskeep, const float* idx_junc_to_end_min, const float* idx_junc_to_end_max){
   is_keep_index_.clear();
   idx_lines_for_junctions_unique_.clear();
   inverse_.clear();
 
+  const int IsKeepSize = 20000;
+
   for (int i = 0; i < 3 * feature_height * feature_width; ++i) {
     if(iskeep[i] > 0){
       is_keep_index_.push_back(i);
     }
+
+    if(is_keep_index_.size() == IsKeepSize){
+      break;
+    }
   }
+
+  int last_keep_index = is_keep_index_[is_keep_index_.size()-1];
+  while(is_keep_index_.size() < IsKeepSize){
+    is_keep_index_.push_back(last_keep_index);
+  }
+
+
+  const int MaxUniqueId = 3000;
 
   int unique_id = 1;
   const int JN = 300; // top k junction number
@@ -292,18 +306,33 @@ bool PLNet::wireframe_matcher(const float* iskeep, const float* idx_junc_to_end_
     int y = (int)idx_junc_to_end_max[index];
 
     if(unique_map[x][y] <= 0){
-      unique_map[x][y] = unique_id++;
+      unique_map[x][y] = unique_id;
     }
-    inverse_.push_back(unique_map[x][y]-1);
+    // inverse_.push_back(unique_map[x][y]-1);
+
+    if(unique_id >= MaxUniqueId){
+      inverse_.push_back(MaxUniqueId-1);
+    }else{
+      inverse_.push_back(unique_map[x][y]-1);
+      unique_id++;
+    }
   }
 
-  idx_lines_for_junctions_unique_.resize((unique_id-1));
+
+
+  idx_lines_for_junctions_unique_.resize(MaxUniqueId);
   for (int i = 0; i < JN; ++i) {
     for (int j = 0; j < JN; ++j) {
       int value = unique_map[i][j];
       if(value){
         idx_lines_for_junctions_unique_[value-1] = std::make_pair(j, i);
       }
+    }
+  }
+
+  if(unique_id -1 < MaxUniqueId){
+    for(int i = unique_id - 1; i < MaxUniqueId; i++){
+      idx_lines_for_junctions_unique_[i] = idx_lines_for_junctions_unique_[0];
     }
   }
 
