@@ -114,3 +114,6 @@ target_link_libraries(relocalization ${PROJECT_NAME}_lib ${catkin_LIBRARIES})
 
 add_executable(test_feature demo/test_feature.cpp)
 target_link_libraries(test_feature ${PROJECT_NAME}_lib ${catkin_LIBRARIES})
+
+add_executable(vo_ros demo/vo_ros.cpp)
+target_link_libraries(vo_ros ${PROJECT_NAME}_lib ${catkin_LIBRARIES})

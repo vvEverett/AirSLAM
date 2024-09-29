@@ -1,0 +1,30 @@
+<launch>
+    <arg name="config_path" default = "$(find air_slam)/configs/visual_odometry/realsense.yaml" />
+    <arg name="camera_config_path" default = "$(find air_slam)/configs/camera/realsense_848_480.yaml" />
+    <arg name="model_dir" default = "$(find air_slam)/output" />
+    <arg name="saving_dir" default = "$(find air_slam)/debug/realsense/" />
+    <arg name="left_topic" default = "/camera/infra1/image_rect_raw" />
+    <arg name="right_topic" default = "/camera/infra2/image_rect_raw" />
+
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="align_depth" value="true"/>
+        <arg name="infra_width" value="848"/>
+        <arg name="infra_height" value="480"/>
+        <arg name="enable_infra1" value="true"/>
+        <arg name="enable_infra2" value="true"/>
+        <arg name="infra_fps" value="30"/>
+        <arg name="enable_depth" value="true"/>
+    </include>
+    
+    <node name="vo_ros" pkg="air_slam" type="vo_ros" output="screen">
+      <param name="config_path" type="string" value="$(arg config_path)" />
+      <param name="camera_config_path" type="string" value="$(arg camera_config_path)" />
+      <param name="model_dir" type="string" value="$(arg model_dir)" />
+      <param name="saving_dir" type="string" value="$(arg saving_dir)" />
+      <param name="left_topic" type="string" value="$(arg left_topic)" />
+      <param name="right_topic" type="string" value="$(arg right_topic)" />
+    </node>
+    
+    <!-- Visualization -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find air_slam)/rviz/vo.rviz" output="screen" />
+</launch>		
