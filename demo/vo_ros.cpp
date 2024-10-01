@@ -14,6 +14,8 @@
 #include "map_builder.h"
 
 MapBuilder* p_map_builder;
+int total_frames = 0;
+double total_processing_time = 0.0;
 
 void GrabStereo(const sensor_msgs::ImageConstPtr& imgLeft, const sensor_msgs::ImageConstPtr& imgRight){
     // Copy the ros image messages to cvMat
@@ -42,7 +44,8 @@ void GrabStereo(const sensor_msgs::ImageConstPtr& imgLeft, const sensor_msgs::Im
     auto after_infer = std::chrono::steady_clock::now();
     auto cost_time = std::chrono::duration_cast<std::chrono::milliseconds>
     (after_infer - before_infer).count();
-
+    total_frames++;
+    total_processing_time += cost_time / 1000.0;
     std::cout << "i ===== " << frame_id++ << " Processing Time: " << cost_time << " ms." << std::endl;
 }
 
@@ -81,6 +84,12 @@ int main(int argc, char **argv) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
   std::cout << "Map building has been stopped" << std::endl; 
+
+  // Calculate the FPS
+  double average_fps = total_frames / total_processing_time;
+  std::cout << "Total frames processed: " << total_frames << std::endl;
+  std::cout << "Total processing time: " << total_processing_time << " seconds" << std::endl;
+  std::cout << "Average FPS = " << average_fps << std::endl;
 
   std::string trajectory_path = ConcatenateFolderAndFileName(configs.saving_dir, "trajectory_v0.txt");
   p_map_builder->SaveTrajectory(trajectory_path);
