@@ -1,0 +1,33 @@
+<launch>
+    <arg name="config_path" default = "$(find air_slam)/configs/relocalization/reloc_realsense.yaml" />
+    <arg name="camera_config_path" default = "$(find air_slam)/configs/camera/realsense_848_480.yaml" />
+    <arg name="camera_topic" default = "/camera/infra1/image_rect_raw" />
+    <arg name="model_dir" default = "$(find air_slam)/output" />
+    <arg name="traj_path" default = "$(find air_slam)/debug/realsense/relocalization.txt" />
+    <arg name="voc_path" default = "$(find air_slam)/voc/point_voc_L4.bin" />
+    <arg name="map_root" default = "$(find air_slam)/debug/realsense" />
+
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="infra_width" value="848"/>
+        <arg name="infra_height" value="480"/>
+        <arg name="enable_infra1" value="true"/>
+        <arg name="enable_infra2" value="true"/>
+        <arg name="infra_fps" value="30"/>
+    </include>
+
+    <node name="reloc_ros" pkg="air_slam" type="reloc_ros" output="screen">
+      <param name="config_path" type="string" value="$(arg config_path)" />
+      <param name="camera_config_path" type="string" value="$(arg camera_config_path)" />
+      <param name="camera_topic" type="string" value="$(arg camera_topic)" />
+      <param name="model_dir" type="string" value="$(arg model_dir)" />
+      <param name="traj_path" type="string" value="$(arg traj_path)" />
+      <param name="map_root" type="string" value="$(arg map_root)" />
+      <param name="voc_path" type="string" value="$(arg voc_path)" />
+    </node>
+
+  <arg name="visualization" default="true" />
+  <group if="$(arg visualization)">
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find air_slam)/rviz/relocalization.rviz" output="screen" />
+  </group>
+    
+</launch>		

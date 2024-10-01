@@ -117,3 +117,6 @@ target_link_libraries(test_feature ${PROJECT_NAME}_lib ${catkin_LIBRARIES})
 
 add_executable(vo_ros demo/vo_ros.cpp)
 target_link_libraries(vo_ros ${PROJECT_NAME}_lib ${catkin_LIBRARIES})
+
+add_executable(reloc_ros demo/reloc_ros.cpp)
+target_link_libraries(reloc_ros ${PROJECT_NAME}_lib ${catkin_LIBRARIES})
