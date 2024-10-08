@@ -108,6 +108,10 @@ The launch files for VO/VIO, map optimization, and relocalization are placed in 
 ```
 roslaunch air_slam vo_euroc.launch 
 ```
+Using RealSense Camere with RealSense-ROS:
+```
+roslaunch air_slam realsense_ros.launch 
+```
 
 ### Map Optimization
 **1**: Change "map_root" in [MR launch file](launch/map_refinement/mr_euroc.launch) to your own map path.
@@ -117,7 +121,10 @@ roslaunch air_slam vo_euroc.launch
 ```
 roslaunch air_slam mr_euroc.launch 
 ```
-
+Using RealSense Camere:
+```
+roslaunch air_slam mr_realsense.launch 
+```
 ### Relocalization
 **1**: Change "dataroot" in [Reloc launch file](launch/relocalization/reloc_euroc.launch) to your own query data path.
 
@@ -129,6 +136,10 @@ roslaunch air_slam mr_euroc.launch
 roslaunch air_slam reloc_euroc.launch 
 ```
 
+Using RealSense Camere with RealSense-ROS:
+```
+roslaunch air_slam reloc_realsense.launch 
+```
 ### Other datasets
 [Launch folder](launch) and [config folder](configs) respectively provide the launch files and configuration files for other datasets in the paper. If you want to run AirSLAM with your own dataset, you need to create your own camera file, configuration file, and launch file. 
 
