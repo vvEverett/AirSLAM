@@ -6,6 +6,8 @@
     <arg name="left_topic" default = "/camera/infra1/image_rect_raw" />
     <arg name="right_topic" default = "/camera/infra2/image_rect_raw" />
 
+    <!-- Realsense Camera -->
+    <rosparam> /camera/stereo_module/emitter_enabled: 2</rosparam>
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="align_depth" value="true"/>
         <arg name="infra_width" value="848"/>
@@ -15,7 +17,7 @@
         <arg name="infra_fps" value="30"/>
         <arg name="enable_depth" value="true"/>
     </include>
-    
+
     <node name="vo_ros" pkg="air_slam" type="vo_ros" output="screen">
       <param name="config_path" type="string" value="$(arg config_path)" />
       <param name="camera_config_path" type="string" value="$(arg camera_config_path)" />
