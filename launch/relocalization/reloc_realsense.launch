@@ -7,6 +7,8 @@
     <arg name="voc_path" default = "$(find air_slam)/voc/point_voc_L4.bin" />
     <arg name="map_root" default = "$(find air_slam)/debug/realsense" />
 
+    <!-- Realsense Camera -->
+    <rosparam> /camera/stereo_module/emitter_enabled: 2</rosparam>
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="infra_width" value="848"/>
         <arg name="infra_height" value="480"/>
