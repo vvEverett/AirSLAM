@@ -2,7 +2,7 @@ min_inlier_num: 45
 pose_refinement: 1 # if true, the localization will be more stable but slower. 
 
 plnet:
-  use_superpoint: 0
+  use_superpoint: 1
   max_keypoints: 400
   keypoint_threshold: 0.004
   remove_borders: 4 
