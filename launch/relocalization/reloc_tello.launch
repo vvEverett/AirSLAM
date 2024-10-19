@@ -1,0 +1,31 @@
+<launch>
+    <!-- Tello nodes -->
+    <node name="tello_node" pkg="tello_ros" type="tello_node.py" output="screen"/>
+    <node name="tello_keyboard_node" pkg="tello_ros" type="tello_keyboard_control.py" output="screen"/>
+
+    <!-- AirSLAM arguments -->
+    <arg name="config_path" default="$(find air_slam)/configs/relocalization/reloc_tello.yaml" />
+    <arg name="camera_config_path" default="$(find air_slam)/configs/camera/tello.yaml" />
+    <arg name="camera_topic" default="/tello/camera/image_gray" />
+    <arg name="model_dir" default="$(find air_slam)/output" />
+    <arg name="traj_path" default="$(find air_slam)/debug/realsense/relocalization.txt" />
+    <arg name="voc_path" default="$(find air_slam)/voc/point_voc_L4.bin" />
+    <arg name="map_root" default="$(find air_slam)/debug/realsense" />
+
+    <!-- AirSLAM node -->
+    <node name="reloc_ros" pkg="air_slam" type="reloc_ros" output="screen">
+        <param name="config_path" type="string" value="$(arg config_path)" />
+        <param name="camera_config_path" type="string" value="$(arg camera_config_path)" />
+        <param name="camera_topic" type="string" value="$(arg camera_topic)" />
+        <param name="model_dir" type="string" value="$(arg model_dir)" />
+        <param name="traj_path" type="string" value="$(arg traj_path)" />
+        <param name="map_root" type="string" value="$(arg map_root)" />
+        <param name="voc_path" type="string" value="$(arg voc_path)" />
+    </node>
+
+    <!-- Visualization -->
+    <arg name="visualization" default="true" />
+    <group if="$(arg visualization)">
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find air_slam)/rviz/relocalization.rviz" output="screen" />
+    </group>
+</launch>
