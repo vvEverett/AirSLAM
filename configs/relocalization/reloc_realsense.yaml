@@ -3,7 +3,7 @@ pose_refinement: 1 # if true, the localization will be more stable but slower.
 
 plnet:
   use_superpoint: 1
-  max_keypoints: 400
+  max_keypoints: 300
   keypoint_threshold: 0.004
   remove_borders: 4 
   line_threshold: 0.8

@@ -1,6 +1,6 @@
 plnet:
   use_superpoint: 1
-  max_keypoints: 400
+  max_keypoints: 300
   keypoint_threshold: 0.004
   remove_borders: 4 
   line_threshold: 0.75
@@ -18,8 +18,8 @@ keyframe:
   lost_num_match: 10
   min_num_match: 30
   max_num_match: 80
-  tracking_point_rate: 0.65  
-  tracking_parallax_rate: 0.1
+  tracking_point_rate: 0.5  
+  tracking_parallax_rate: 0.2
 
 optimization:
   tracking:
