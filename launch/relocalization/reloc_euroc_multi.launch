@@ -1,0 +1,48 @@
+<launch>
+   <!-- Common arguments -->
+   <arg name="visualization" default="true" />
+   <arg name="model_dir" default = "$(find air_slam)/output" />
+   <arg name="voc_path" default = "$(find air_slam)/voc/point_voc_L4.bin" />
+   <arg name="map_root" default = "$(find air_slam)/debug" />
+   <arg name="camera_config_path" default = "$(find air_slam)/configs/camera/euroc.yaml" />
+
+   <!-- First experiment -->
+   <group ns="exp1">
+       <arg name="config_path_1" default = "$(find air_slam)/configs/relocalization/euroc/reloc_euroc_exp1.yaml" />
+       <arg name="dataroot_1" default = "/media/orin/data/euroc/seq/MH_03_medium/cam0/data" />
+       <arg name="traj_path_1" default = "$(find air_slam)/debug/relocalization_exp1.txt" />
+
+       <node name="relocalization" pkg="air_slam" type="relocalization" output="screen">
+           <param name="config_path" type="string" value="$(arg config_path_1)" />
+           <param name="dataroot" type="string" value="$(arg dataroot_1)" />
+           <param name="camera_config_path" type="string" value="$(arg camera_config_path)" />
+           <param name="model_dir" type="string" value="$(arg model_dir)" />
+           <param name="traj_path" type="string" value="$(arg traj_path_1)" />
+           <param name="map_root" type="string" value="$(arg map_root)" />
+           <param name="voc_path" type="string" value="$(arg voc_path)" />
+       </node>
+   </group>
+
+   <!-- Second experiment -->
+   <group ns="exp2">
+       <arg name="config_path_2" default = "$(find air_slam)/configs/relocalization/euroc/reloc_euroc_exp2.yaml" />
+       <arg name="dataroot_2" default = "/media/orin/data/euroc/seq/MH_02_easy/cam0/data" />
+       <arg name="traj_path_2" default = "$(find air_slam)/debug/relocalization_exp2.txt" />
+
+       <node name="relocalization" pkg="air_slam" type="relocalization" output="screen">
+           <param name="config_path" type="string" value="$(arg config_path_2)" />
+           <param name="dataroot" type="string" value="$(arg dataroot_2)" />
+           <param name="camera_config_path" type="string" value="$(arg camera_config_path)" />
+           <param name="model_dir" type="string" value="$(arg model_dir)" />
+           <param name="traj_path" type="string" value="$(arg traj_path_2)" />
+           <param name="map_root" type="string" value="$(arg map_root)" />
+           <param name="voc_path" type="string" value="$(arg voc_path)" />
+       </node>
+   </group>
+
+   <!-- Visualization -->
+   <group if="$(arg visualization)">
+       <node name="rviz" pkg="rviz" type="rviz" args="-d $(find air_slam)/rviz/relocalization_multi.rviz" output="screen"/>
+   </group>
+   
+</launch>

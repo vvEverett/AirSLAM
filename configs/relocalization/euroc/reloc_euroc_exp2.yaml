@@ -1,0 +1,36 @@
+min_inlier_num: 45
+pose_refinement: 1
+plnet:
+  use_superpoint: 1
+  max_keypoints: 400
+  keypoint_threshold: 0.004
+  remove_borders: 4
+  line_threshold: 0.8
+  line_length_threshold: 50
+point_matcher:
+  matcher: 0
+  image_width: 752
+  image_height: 480
+  onnx_file: "superpoint_lightglue.onnx"
+  engine_file: "superpoint_lightglue.engine"
+pose_estimation:
+  mono_point: 50
+  stereo_point: 75
+  mono_line: 50
+  stereo_line: 75
+  rate: 0.5
+ros_publisher:
+  feature: 1
+  feature_topic: "/exp2/AirSLAM/feature"
+  frame_pose: 1
+  frame_pose_topic: "/exp2/AirSLAM/frame_pose"
+  frame_odometry_topic: "/exp2/AirSLAM/LatestOdometry"
+  keyframe: 1
+  keyframe_topic: "/exp2/AirSLAM/keyframe"
+  path_topic: "/exp2/AirSLAM/odometry"
+  map: 1
+  map_topic: "/exp2/AirSLAM/map"
+  mapline: 1
+  mapline_topic: "/exp2/AirSLAM/mapline"
+  reloc: 1
+  reloc_topic: "/exp2/AirSLAM/reloc"
