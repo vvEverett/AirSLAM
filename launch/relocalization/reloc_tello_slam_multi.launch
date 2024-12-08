@@ -1,0 +1,79 @@
+<launch>
+    <!-- Tello nodes -->
+    <node pkg="tello_ros" type="multi_tello_node.py" name="multi_tello_node" output="screen">
+        <rosparam>
+            tello_configs:
+                - id: "0"
+                  ip: "192.168.10.1"
+                  video_port: 11111
+                - id: "1"
+                  ip: "192.168.3.21"
+                  video_port: 11118
+        </rosparam>
+    </node>
+    <!-- Tello UI nodes -->
+    <node pkg="tello_ros" type="tello_ui.py" name="tello_ui_0" output="screen">
+        <param name="ID" value="0" />
+        <param name="POSE_TOPIC_NAME" value="/exp0/AirSLAM/frame_pose" />
+    </node>
+    <node pkg="tello_ros" type="tello_ui.py" name="tello_ui_1" output="screen">
+        <param name="ID" value="1" />
+        <param name="POSE_TOPIC_NAME" value="/exp1/AirSLAM/frame_pose" />
+    </node>
+    <!-- Tello Slam Control nodes -->
+    <node pkg="tello_ros" type="tello_slam_control.py" name="tello_slam_control_0" output="screen">
+        <param name="ID" value="0" />
+        <param name="POSE_TOPIC_NAME" value="/exp0/AirSLAM/frame_pose" /> 
+    </node>
+    
+    <node pkg="tello_ros" type="tello_slam_control.py" name="tello_slam_control_1" output="screen">
+        <param name="ID" value="1" /> 
+        <param name="POSE_TOPIC_NAME" value="/exp1/AirSLAM/frame_pose" />
+    </node>
+
+    <!-- Common AirSLAM arguments -->
+    <arg name="model_dir" default="$(find air_slam)/output" />
+    <arg name="voc_path" default="$(find air_slam)/voc/point_voc_L4.bin" />
+    <arg name="map_root" default="$(find air_slam)/debug/realsense" />
+    <!-- Tello 0 AirSLAM nodes -->
+   <group ns="tello0">
+       <arg name="config_path_0" default = "$(find air_slam)/configs/relocalization/tello/reloc_tello0.yaml" />
+       <arg name="camera_config_path_0" default="$(find air_slam)/configs/camera/tello/tello0.yaml" />
+       <arg name="camera_topic_0" default="/tello0/camera/image_gray" />
+       <arg name="traj_path_0" default = "$(find air_slam)/debug/realsense/relocalization_tello0.txt" />
+
+       <node name="reloc_ros" pkg="air_slam" type="reloc_ros" output="screen">
+           <param name="config_path" type="string" value="$(arg config_path_0)" />
+           <param name="camera_config_path" type="string" value="$(arg camera_config_path_0)" />
+           <param name="camera_topic" type="string" value="$(arg camera_topic_0)" />
+           <param name="traj_path" type="string" value="$(arg traj_path_0)" />
+           <param name="model_dir" type="string" value="$(arg model_dir)" />
+           <param name="voc_path" type="string" value="$(arg voc_path)" />
+           <param name="map_root" type="string" value="$(arg map_root)" />
+       </node>
+   </group>
+
+    <!-- Tello 1 AirSLAM nodes -->
+   <group ns="tello1">
+       <arg name="config_path_1" default = "$(find air_slam)/configs/relocalization/tello/reloc_tello1.yaml" />
+       <arg name="camera_config_path_1" default="$(find air_slam)/configs/camera/tello/tello1.yaml" />
+       <arg name="camera_topic_1" default="/tello1/camera/image_gray" />
+       <arg name="traj_path_1" default = "$(find air_slam)/debug/realsense/relocalization_tello1.txt" />
+
+       <node name="reloc_ros" pkg="air_slam" type="reloc_ros" output="screen">
+           <param name="config_path" type="string" value="$(arg config_path_1)" />
+           <param name="camera_config_path" type="string" value="$(arg camera_config_path_1)" />
+           <param name="camera_topic" type="string" value="$(arg camera_topic_1)" />
+           <param name="traj_path" type="string" value="$(arg traj_path_1)" />
+           <param name="model_dir" type="string" value="$(arg model_dir)" />
+           <param name="voc_path" type="string" value="$(arg voc_path)" />
+           <param name="map_root" type="string" value="$(arg map_root)" />
+       </node>
+   </group>
+
+    <!-- Visualization -->
+    <arg name="visualization" default="true" />
+    <group if="$(arg visualization)">
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find air_slam)/rviz/relocalization_multi_tello.rviz" output="screen" />
+    </group>
+</launch>
