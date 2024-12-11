@@ -12,8 +12,8 @@ max_y_diff: 2
 distortion_type: 0  # 0 for undistorted inputs, 1 for radial-tangential: [k1, k2, p1, p2, k3], 2 for equidistant/fisheye:  [k1, k2, k3, k4, 0].
 cam0:
   #intrinsics: [924.873180, 923.504522, 486.997346, 364.308527] # fx, fy, cx, cy
-  intrinsics: [948.426602, 947.225389, 493.048212, 381.507733] # fx, fy, cx, cy
-  distortion_coeffs: [0.041448, -0.258409, 0.005324, 0.000669, 0]
+  intrinsics: [982.244303, 988.251216, 474.244571, 420.461937] # fx, fy, cx, cy
+  distortion_coeffs: [0.025791, 0.020098, 0.021295, -0.002347, 0]
   T_type: 0           # 0 for Euroc format, the following T is Tbc. 1 for Kalibr format, the following T is Tcb
   T: 
   - [1.0, 0.0, 0.0, 0.0]
@@ -21,8 +21,8 @@ cam0:
   - [0.0, 0.0, 1.0, 0.0]
   - [0.0, 0.0, 0.0, 1.0]
 cam1:
-  intrinsics: [948.426602, 947.225389, 493.048212, 381.507733] # fx, fy, cx, cy
-  distortion_coeffs: [0.041448, -0.258409, 0.005324, 0.000669, 0]
+  intrinsics: [982.244303, 988.251216, 474.244571, 420.461937] # fx, fy, cx, cy
+  distortion_coeffs: [0.025791, 0.020098, 0.021295, -0.002347, 0]
   T_type: 0           # 0 for Euroc format, the following T is Tbc. 1 for Kalibr format, the following T is Tcb
   T: 
   - [1.0, 0.0, 0.0, 0.0]
