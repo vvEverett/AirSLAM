@@ -38,7 +38,7 @@
     <!-- Tello 0 AirSLAM nodes -->
    <group ns="tello0">
        <arg name="config_path_0" default = "$(find air_slam)/configs/relocalization/tello/reloc_tello0.yaml" />
-       <arg name="camera_config_path_0" default="$(find air_slam)/configs/camera/tello/tello0.yaml" />
+       <arg name="camera_config_path_0" default="$(find air_slam)/configs/camera/tello/tello_5EAE22.yaml" />
        <arg name="camera_topic_0" default="/tello0/camera/image_gray" />
        <arg name="traj_path_0" default = "$(find air_slam)/debug/realsense/relocalization_tello0.txt" />
 
@@ -56,7 +56,7 @@
     <!-- Tello 1 AirSLAM nodes -->
    <group ns="tello1">
        <arg name="config_path_1" default = "$(find air_slam)/configs/relocalization/tello/reloc_tello1.yaml" />
-       <arg name="camera_config_path_1" default="$(find air_slam)/configs/camera/tello/tello1.yaml" />
+       <arg name="camera_config_path_1" default="$(find air_slam)/configs/camera/tello/tello_FDCFEB.yaml" />
        <arg name="camera_topic_1" default="/tello1/camera/image_gray" />
        <arg name="traj_path_1" default = "$(find air_slam)/debug/realsense/relocalization_tello1.txt" />
 
